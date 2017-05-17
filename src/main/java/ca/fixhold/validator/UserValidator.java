@@ -23,7 +23,7 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
         if (user.getEmail().length() < 6 || user.getEmail().length() > 32) {
             errors.rejectValue("email", "Size.userForm.email");
         }
