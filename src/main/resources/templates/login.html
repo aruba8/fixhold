@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head('Login')">
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--/*@thymesVar id="error" type=""*/-->
+<p th:if="${error}" class="error">Wrong user or password</p>
+
+<!--/*@thymesVar id="user" type="ca.fixhold.model.User"*/-->
+<form action="#" th:action="@{/login}" th:object="${user}" method="post">
+    <table border="1">
+        <tr>
+            <td><label for="email" th:text="Email">Email</label></td>
+            <td><input type="number" th:field="*{email}" id="email"/></td>
+        </tr>
+        <tr>
+            <td><label for="password" th:text="Password">Password</label></td>
+            <td><input id="password" type="text" th:field="*{password}"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
