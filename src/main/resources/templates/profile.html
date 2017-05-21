@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="header::head('User Profile')">
+    <title>User Profile</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div class="user-info" th:object="${user}">
+    <span for="firstname">First name</span>: <span th:text="*{firstName}">firstName</span>
+    <br/>
+    <span for="firstname">Last name</span>: <span th:text="*{lastName}">firstName</span>
+    <br/>
+    <span for="firstname">Email</span>: <span th:text="*{email}">firstName</span>
+    <br/>
+    <a th:href="@{/profile/edit}">Edit</a>
+
+
+</div>
+
+</body>
+</html>
