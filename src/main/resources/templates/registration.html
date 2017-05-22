@@ -16,6 +16,7 @@
                 <div class="form-group">
                     <label for="email" th:text="Email">Email</label>
                     <div class="controls">
+                        <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
                         <input class="form-control" type="email" th:field="*{email}" id="email"/>
                     </div>
                 </div>
