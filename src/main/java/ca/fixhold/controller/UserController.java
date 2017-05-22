@@ -1,7 +1,9 @@
 package ca.fixhold.controller;
 
 import ca.fixhold.form.UserProfileForm;
+import ca.fixhold.model.Role;
 import ca.fixhold.model.User;
+import ca.fixhold.repository.RoleRepository;
 import ca.fixhold.service.SecurityService;
 import ca.fixhold.service.UserService;
 import ca.fixhold.validator.UserValidator;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -24,11 +28,14 @@ public class UserController {
 
     private final UserValidator userValidator;
 
+    private final RoleRepository roleRepository;
+
     @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator) {
+    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
+        this.roleRepository = roleRepository;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -46,8 +53,11 @@ public class UserController {
             return "registration";
         }
 
+        Role userRole = roleRepository.findByName("USER");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+        userForm.setRoles(userRoles);
         userService.save(userForm);
-
         securityService.autoLogin(userForm.getEmail(), userForm.getPasswordConfirm());
 
         return "redirect:/welcome";
