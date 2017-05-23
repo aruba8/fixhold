@@ -6,7 +6,6 @@ import ca.fixhold.model.User;
 import ca.fixhold.repository.RoleRepository;
 import ca.fixhold.service.SecurityService;
 import ca.fixhold.service.UserService;
-import ca.fixhold.validator.RegistrationFormValidator;
 import ca.fixhold.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,16 +28,13 @@ public class UserController {
 
     private final UserValidator userValidator;
 
-    private final RegistrationFormValidator registrationFormValidator;
-
     private final RoleRepository roleRepository;
 
     @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RegistrationFormValidator registrationFormValidator, RoleRepository roleRepository) {
+    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
-        this.registrationFormValidator = registrationFormValidator;
         this.roleRepository = roleRepository;
     }
 
