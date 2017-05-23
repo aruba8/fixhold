@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header::head('Registration')">
     <title>Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -7,33 +7,37 @@
 <body>
 <p th:if="${error}" class="error">Wrong user or password</p>
 
-<!--/*@thymesVar id="user" type="ca.fixhold.model.User"*/-->
 <div class="container">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <!--/*@thymesVar id="userForm" type="ca.fixhold.model.User"*/-->
             <form class="form-horizontal" action="#" th:action="@{/registration}" th:object="${userForm}" method="post">
                 <h2 class="form-signin-heading">Please sign in</h2>
                 <div class="form-group">
                     <label for="email" th:text="Email">Email</label>
                     <div class="controls">
-                        <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
+                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:class="bg-danger">email Error</span>
                         <input class="form-control" type="email" th:field="*{email}" id="email"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" th:text="Password">Password</label>
                     <div class="controls">
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:class="bg-danger">email Error</span>
                         <input class="form-control" id="password" type="password" th:field="*{password}"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password" th:text="Password">Confirm password</label>
+                    <label for="passwordConfirm">Confirm password</label>
                     <div class="controls">
+                        <span th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"
+                              th:class="bg-danger">email Error</span>
                         <input class="form-control" id="passwordConfirm" type="password" th:field="*{passwordConfirm}"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="controls">
+                        <a class="btn btn-info" th:href="@{/login}">Login</a>
                         <input class="btn btn-success" type="submit" value="Submit"/>
                     </div>
                 </div>

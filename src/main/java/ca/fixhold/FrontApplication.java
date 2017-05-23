@@ -7,6 +7,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 public class FrontApplication extends SpringBootServletInitializer {
+
     public static void main(String[] args) {
         SpringApplication.run(FrontApplication.class, args);
     }

@@ -1,8 +1,5 @@
 package ca.fixhold.model;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -56,8 +53,6 @@ public class User {
         this.roles = roles;
     }
 
-    @Email(message = "*Please provide a valid Email")
-    @NotEmpty(message = "*Please provide a valid Email")
     public String getEmail() {
         return email;
     }

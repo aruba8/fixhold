@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header::head('User Profile')">
     <title>User Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -8,6 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <!--/*@thymesVar id="userProfileForm" type="ca.fixhold.form.UserProfileForm"*/-->
             <form th:action="@{/profile/edit}" th:object="${userProfileForm}" method="post">
                 <div class="form-group">
                     <label for="firstName">First name:</label>
@@ -32,6 +33,7 @@
                     <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">wrong email</span>
                 </p>
                 <div class="form-group">
+                    <a class="btn btn-default" th:href="@{/profile}">Back</a>
                     <input type="submit" class="btn btn-success" value="Submit"/>
                 </div>
             </form>

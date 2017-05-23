@@ -6,6 +6,7 @@ import ca.fixhold.model.User;
 import ca.fixhold.repository.RoleRepository;
 import ca.fixhold.service.SecurityService;
 import ca.fixhold.service.UserService;
+import ca.fixhold.validator.RegistrationFormValidator;
 import ca.fixhold.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,13 +29,16 @@ public class UserController {
 
     private final UserValidator userValidator;
 
+    private final RegistrationFormValidator registrationFormValidator;
+
     private final RoleRepository roleRepository;
 
     @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository) {
+    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RegistrationFormValidator registrationFormValidator, RoleRepository roleRepository) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
+        this.registrationFormValidator = registrationFormValidator;
         this.roleRepository = roleRepository;
     }
 
@@ -46,8 +50,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-        userValidator.validate(userForm, bindingResult);
+    public String registration(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
+
+        userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "registration";
@@ -56,11 +61,12 @@ public class UserController {
         Role userRole = roleRepository.findByName("USER");
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
-        userForm.setRoles(userRoles);
-        userService.save(userForm);
-        securityService.autoLogin(userForm.getEmail(), userForm.getPasswordConfirm());
+        user.setRoles(userRoles);
+        user.setActive(true);
+        userService.save(user);
+        securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 
-        return "redirect:/welcome";
+        return "redirect:/profile";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
