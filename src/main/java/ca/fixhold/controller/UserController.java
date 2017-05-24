@@ -6,6 +6,7 @@ import ca.fixhold.model.User;
 import ca.fixhold.repository.RoleRepository;
 import ca.fixhold.service.SecurityService;
 import ca.fixhold.service.UserService;
+import ca.fixhold.validator.UserProfileFormValidator;
 import ca.fixhold.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,12 +30,15 @@ public class UserController {
 
     private final RoleRepository roleRepository;
 
+    private final UserProfileFormValidator userProfileFormValidator;
+
     @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository) {
+    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository, UserProfileFormValidator userProfileFormValidator) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
         this.roleRepository = roleRepository;
+        this.userProfileFormValidator = userProfileFormValidator;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -98,7 +101,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
-    public String submitEditProfile(@ModelAttribute("userProfileForm") @Valid UserProfileForm userProfileForm, BindingResult result, Principal principal) {
+    public String submitEditProfile(@ModelAttribute("userProfileForm") UserProfileForm userProfileForm, BindingResult result, Principal principal) {
+
+        userProfileFormValidator.validate(userProfileForm, result);
         if (result.hasErrors()) {
             return "editUserForm";
         }
