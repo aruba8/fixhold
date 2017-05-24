@@ -24,7 +24,6 @@ public class UserProfileFormValidator implements Validator {
         UserProfileForm userProfileForm = (UserProfileForm) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty.userProfileForm.firstName");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty.userProfileForm.lastName");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
 
         if (userProfileForm.getFirstName().length() < 2 || userProfileForm.getFirstName().length() > 50) {
             errors.rejectValue("firstName", "Size.userProfileForm.firstName");

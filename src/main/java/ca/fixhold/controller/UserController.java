@@ -9,6 +9,7 @@ import ca.fixhold.service.UserService;
 import ca.fixhold.validator.UserProfileFormValidator;
 import ca.fixhold.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,13 +33,17 @@ public class UserController {
 
     private final UserProfileFormValidator userProfileFormValidator;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository, UserProfileFormValidator userProfileFormValidator) {
+    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator, RoleRepository roleRepository, UserProfileFormValidator userProfileFormValidator, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
         this.roleRepository = roleRepository;
         this.userProfileFormValidator = userProfileFormValidator;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -62,6 +67,7 @@ public class UserController {
         userRoles.add(userRole);
         user.setRoles(userRoles);
         user.setActive(true);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userService.save(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 
@@ -102,12 +108,12 @@ public class UserController {
 
     @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
     public String submitEditProfile(@ModelAttribute("userProfileForm") UserProfileForm userProfileForm, BindingResult result, Principal principal) {
-
+        String email = principal.getName();
+        userProfileForm.setEmail(email);
         userProfileFormValidator.validate(userProfileForm, result);
         if (result.hasErrors()) {
             return "editUserForm";
         }
-        String email = principal.getName();
         User user = userService.findByEmail(email);
         user.setFirstName(userProfileForm.getFirstName());
         user.setLastName(userProfileForm.getLastName());
