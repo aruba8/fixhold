@@ -1,7 +1,7 @@
 -- auto-generated definition
 CREATE TABLE role
 (
-  id   SERIAL
+  id   BIGINT NOT NULL
     CONSTRAINT role_pkey
     PRIMARY KEY,
   name VARCHAR(255)
@@ -9,7 +9,7 @@ CREATE TABLE role
 
 CREATE TABLE users
 (
-  id       SERIAL
+  id       BIGINT NOT NULL
     CONSTRAINT users_pkey
     PRIMARY KEY,
   email    VARCHAR(255),
@@ -17,7 +17,7 @@ CREATE TABLE users
 );
 CREATE TABLE users_role
 (
-  users_id SERIAL
+  users_id BIGINT NOT NULL
     CONSTRAINT on_users REFERENCES users,
   role_id  BIGINT NOT NULL
     CONSTRAINT on_roles REFERENCES role,
